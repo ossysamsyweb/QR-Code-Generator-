@@ -1,2 +1,2 @@
 # QR-Code-Generator-
-choose  your QR Code size, Typethe information tou want to display and BOOM!..... it Generated
+choose  your QR Code size, Type the information you want to display and BOOM! ..... it Generated
