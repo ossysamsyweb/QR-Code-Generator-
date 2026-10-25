@@ -6,54 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Generator</title>
     <link rel="stylesheet" href="style.css">
+    <!-- QR Code JavaScript Library -->
+    <script src="https://cloudflare.com"></script>
 </head>
 <body>
-    <script type="text/javascript">
-        function genQR()
-        {
-            var gapi="https://chart.googleapis.com/chart?chf=bg,s,65432100&cht=qr&chs=";
-            var myimg=document.getElementById("img");
-            var mytext=document.getElementById("qrtext").value;
-            var mysize=document.getElementById("size").value;
 
-            if (mytext!=="" && mysize=="100")
-            {
-                myimg.src=gapi+"100x100"+"&chl="+mytext;
-                // https://chart.googleapis.com/chart?cht=qr&chs=100x100&chl=hello
-            }
-
-            else if(mytext!=="" && mysize=="150")
-            {
-
-                myimg.src=gapi+"150x150"+"&chl="+mytext;
-            }
-
-            else if(mytext!=="" && mysize=="200")
-            {
-                myimg.src=gapi+"200x200"+"&chl="+mytext;
-            }
-
-            else if (mytext!=="" && mysize=="250")
-            {
-                myimg.src=gapi+"250x250"+"&chl="+mytext;
-            }
-
-            else if (mytext!=="" && mysize=="300")
-            {
-                myimg.src=gapi+"300x300"+"&chl="+mytext;
-            }
-
-            else
-            {
-                alert("Please Enter Text");
-            }
+    <div class="grid" style="max-width: 400px; margin: 0 auto; text-align: center;">
+        <h2>QR Code Generator</h2>
         
-        }
-    </script>
-    <div class="grid">
-        <h2 align="center">Qr Code Generator</h2>
-        <center>
-        <img src="" id="img"></center>
+        <!-- Container where the QR code will be generated -->
+        <div id="qrcode-container" style="display: flex; justify-content: center; margin-bottom: 20px;"></div>
 
         <select id="size">
             <option value="100">100x100</option>
@@ -63,13 +25,46 @@
             <option value="300">300x300</option>
         </select>
         <br><br>
+
         <textarea placeholder="Enter Your Text" id="qrtext"></textarea>
         <br><br>
-        <input type="submit" value="Generate" onclick="genQR()">
 
+        <button type="button" onclick="genQR()">Generate</button>
+        
         <p>Developed By Ossysamson Innovations</p>
-        
-        
     </div>
+
+    <script type="text/javascript">
+        // Initialize the QR code instance once
+        const qrcodeContainer = document.getElementById("qrcode-container");
+        const qrcode = new QRCode(qrcodeContainer, {
+            text: "Welcome",
+            width: 250,
+            height: 250,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+
+        function genQR() {
+            const mytext = document.getElementById("qrtext").value.trim();
+            const mysize = parseInt(document.getElementById("size").value);
+
+            if (mytext === "") {
+                alert("Please Enter Text");
+                return;
+            }
+
+            // Clear the previous QR code canvas/image elements inside the container
+            qrcode.clear(); 
+            
+            // Reconfigure the size dynamically
+            qrcode._htOption.width = mysize;
+            qrcode._htOption.height = mysize;
+            
+            // Generate the new QR code
+            qrcode.makeCode(mytext);
+        }
+    </script>
 </body>
 </html>
