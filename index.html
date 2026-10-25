@@ -5,17 +5,106 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Generator</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- CORRECTED: Working CDN link for the QR library -->
+    <!-- Working CDN link for the QR library -->
     <script src="https://cloudflare.com"></script>
+    
+    <style>
+        /* Exact color scheme and layout matching your user interface */
+        body {
+            background-color: #312a31;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .grid {
+            width: 100%;
+            max-width: 450px;
+            padding: 20px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .qr-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+            min-height: 100px;
+        }
+
+        /* Styling for the canvas wrapper to maintain a neat container look */
+        #qr-canvas {
+            background-color: #ffffff;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        select, textarea {
+            width: 100%;
+            background-color: #424952;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            padding: 15px;
+            font-size: 16px;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            height: 120px;
+            resize: none;
+        }
+
+        textarea::placeholder {
+            color: #8a94a0;
+        }
+
+        /* The signature vibrant orange generate button */
+        button {
+            width: 100%;
+            background-color: #e05a26;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            padding: 18px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            margin-bottom: 25px;
+        }
+
+        button:hover {
+            background-color: #c94f20;
+        }
+
+        p {
+            color: #ffffff;
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
 
     <div class="grid">
-        <h2>QR Code Generator</h2>
+        <h2>Qr Code Generator</h2>
         
-        <!-- Standard HTML5 Canvas - Will never show a broken image link icon -->
-        <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+        <!-- Wrapper container that tightly centers the generated QR code -->
+        <div class="qr-container">
             <canvas id="qr-canvas"></canvas>
         </div>
 
@@ -26,10 +115,8 @@
             <option value="250" selected>250x250</option>
             <option value="300">300x300</option>
         </select>
-        <br><br>
 
         <textarea placeholder="Enter Your Text" id="qrtext"></textarea>
-        <br><br>
 
         <button type="button" onclick="genQR()">Generate</button>
         
@@ -37,15 +124,15 @@
     </div>
 
     <script type="text/javascript">
-        // 1. Initialize the QR generator targeted directly at the canvas element
+        // Initialize the QR generator targeted directly at the canvas element
         const qr = new QRious({
             element: document.getElementById('qr-canvas'),
             size: 250,
-            value: 'Ossysamson Innovations', // Default initial text
-            level: 'H' // High error correction
+            value: 'Ossysamson Innovations', // Initial starting placeholder
+            level: 'H' 
         });
 
-        // 2. Handle dynamic updates cleanly when the button is clicked
+        // Handle structural dynamic updates smoothly
         function genQR() {
             const mytext = document.getElementById("qrtext").value.trim();
             const mysize = parseInt(document.getElementById("size").value);
@@ -55,7 +142,6 @@
                 return;
             }
 
-            // Directly modify the generator properties (automatically re-renders the canvas)
             qr.size = mysize;
             qr.value = mytext;
         }
