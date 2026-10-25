@@ -6,16 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Generator</title>
     <link rel="stylesheet" href="style.css">
-    <!-- QR Code JavaScript Library -->
+    <!-- Clean, Canvas-based QR Code Library -->
     <script src="https://cloudflare.com"></script>
 </head>
 <body>
 
-    <div class="grid" style="max-width: 400px; margin: 0 auto; text-align: center;">
+    <div class="grid">
         <h2>QR Code Generator</h2>
         
-        <!-- Container where the QR code will be generated -->
-        <div id="qrcode-container" style="display: flex; justify-content: center; margin-bottom: 20px;"></div>
+        <!-- Standard HTML5 Canvas - Will never show a broken image link icon -->
+        <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+            <canvas id="qr-canvas"></canvas>
+        </div>
 
         <select id="size">
             <option value="100">100x100</option>
@@ -35,17 +37,15 @@
     </div>
 
     <script type="text/javascript">
-        // Initialize the QR code instance once
-        const qrcodeContainer = document.getElementById("qrcode-container");
-        const qrcode = new QRCode(qrcodeContainer, {
-            text: "Welcome",
-            width: 250,
-            height: 250,
-            colorDark: "#000000",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.H
+        // 1. Initialize the QR generator targeted directly at the canvas element
+        const qr = new QRious({
+            element: document.getElementById('qr-canvas'),
+            size: 250,
+            value: 'Ossysamson Innovations', // Default initial text
+            level: 'H' // High error correction
         });
 
+        // 2. Handle dynamic updates cleanly when the button is clicked
         function genQR() {
             const mytext = document.getElementById("qrtext").value.trim();
             const mysize = parseInt(document.getElementById("size").value);
@@ -55,15 +55,9 @@
                 return;
             }
 
-            // Clear the previous QR code canvas/image elements inside the container
-            qrcode.clear(); 
-            
-            // Reconfigure the size dynamically
-            qrcode._htOption.width = mysize;
-            qrcode._htOption.height = mysize;
-            
-            // Generate the new QR code
-            qrcode.makeCode(mytext);
+            // Directly modify the generator properties (automatically re-renders the canvas)
+            qr.size = mysize;
+            qr.value = mytext;
         }
     </script>
 </body>
